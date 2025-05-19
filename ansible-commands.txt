@@ -1,3 +1,21 @@
 Command to run in ansible server:
 
 ansible-playbook -i inventory.ini -e ansible_user=ec2-user -e ansible_password=DevOps321 01-playbook.yaml
+
+# connect from ansible server to node using ssh and print some text. no need to login to node here.
+ssh <username>@<serverIP> 'echo "Hello World" > /tmp/hello.txt '
+
+# Install ansible on ansible server 
+
+sudo dnf install ansible -y 
+
+#check version
+ansible --version
+
+# to connect to another server node from ansible server
+ansible all -i <IP>, -e ansible_user=<username> -e ansible_password=<Password> -m ping
+
+#using above command we can install nginx on that node without login directly but using ansible server
+
+ansible all -i <IP>, -e ansible_user=<username> -e ansible_password=<Password> -b -m dnf -a "name=nginx state=installed"
+-b means become root

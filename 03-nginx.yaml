@@ -1,0 +1,13 @@
+- name: install and run nginx     # Name of the installing package
+  hosts: web                      # This will pick the hosts from other file called Inventory
+  become: yes # -b (sudo access)
+  tasks:
+  - name: install nginx           # Command to install
+    ansible.builtin.package:      # Builtin package in ansible
+      name: nginx
+      state: present              # This will install nginx
+  - name: start nginx
+    ansible.builtin.service:      # Builtin package in ansible
+      name: nginx
+      state: started              # This will start nginx
+      enabled: yes
