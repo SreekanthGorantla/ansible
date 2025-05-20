@@ -9,7 +9,3 @@
 
 # command to execute: ansible-playbook -i inventory.ini 10.vars-args.yaml -e "COURSE='DevOps with AWS'" -e "DURATION=120HRS" -e "TRAINER=sivakumar"
 
-#first preference is commandline arguements 
-#second preference is Task level
-# 3rd preference is prompt
-# 4th preference PLAY level
