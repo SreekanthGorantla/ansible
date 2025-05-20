@@ -1,0 +1,28 @@
+- name: variables
+  hosts: local
+  connection: local
+  vars:   #Play level variables
+    GREET: "PLAY"
+  vars_files:
+  - course.yaml
+  vars_prompt:
+  -name: GREET
+    prompt: Enter the value
+    private: false
+  tasks:
+  - name: print the variable
+    vars:
+      GREET: "TASK"
+    ansible.builtin.debug:
+      msg: "Hello from {{ GREET }}"
+
+
+# 1st preference is commandline arguements 
+# 2nd preference is Task level
+# 3rd preference is Files
+# 4th preference is Prompt level
+# 5th preference is Play level
+# 6th preference is Inventory level
+
+# Issue: File is a reserved word in Ansible which i don't know. I have given a name as File at one place 
+# which causes an issue which took some time to figure it out and changed it to other name and it worked.
