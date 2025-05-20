@@ -1,0 +1,15 @@
+- name: shell vs command
+  hosts: local
+  connections: local
+  tasks:
+  - name: execute ls command
+    ansible.builtin.command: ls -ltr > /tmp/cmd_output.txt
+    ansible.builtin.shell: ls -ltr > /tmp/shell_output.txt
+
+  - name: execute ls command in command module
+    ansible.builtin.command: ls -ltr   # this will not make any error because of no redirections
+    register: command_result   # This helps to store the output of above command
+
+  - name: print registered result
+    ansible.builtin.debut:
+      msg: "{{ command_result }}"
