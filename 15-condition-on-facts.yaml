@@ -1,0 +1,20 @@
+- name: install nginx
+  hosts: web
+  become: yes
+  tasks:
+  - name: install nginx if RHEL
+    ansible.builtin.dnf:
+      name: nginx
+      state: installed
+    when: ansible_os_family == "RedHat"
+
+  - name: install nginx if RHEL
+    ansible.builtin.apt:
+      name: nginx
+      state: installed
+    when: ansible_os_family == "Debian"
+
+
+# How to run this playbook
+
+# ansible-playbook -i inventory.ini 15-condition-on-facts.yaml
