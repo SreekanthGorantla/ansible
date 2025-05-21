@@ -1,0 +1,65 @@
+- name: Create ec2 and r53 records
+  connection: local
+  hosts: local
+  vars:
+    subnet_id: 
+    security_group_id: 
+    ami_id:
+    instance_type: t3.micro
+    zone: sreeaws.space
+    instances:
+    - mysql
+    - backend
+    - frontend
+  tasks:
+  - name: Install AWS Python libs
+    ansible.builtin.pip:
+      name: "{{ item }}"
+      executable: pip3.9
+    loop:
+    - boto3
+    - botocore
+
+  - name: create ec2 instances
+    amazon.aws.ec2_instance:
+      name: "{{ item }}"
+      subnet_id: "{{ subnet_id }}"
+      security_group: "{{ security_group_id }}"
+      image_id: "{{ ami_id }}"
+      instance_type: "{{ instance_type }}"
+    loop: "{{ instances }}"
+    register: ec2_info
+
+  # - name: print ec2_info
+  #   ansible.builtin.debug:
+  #     msg: "{{ ec2_info }}"
+
+  - name: print private ip addresses
+    ansible.builtin.debug:
+      msg: "{{ item.item }}": "{{ item.instances[0].private_ip_address }}"
+    loop: "{{ ec2_info.results }}"
+
+  - name: create private ip R53 records
+    amazon.aws.route53:
+      state: present
+      zone: "{{ zone }}"
+      record: "{{ item.item}}.{{ zone }}"
+      type:  A
+      ttl: 1
+      value: "{{ item.instances[0].private_ip_address }}"
+      wait: true
+      overwrite: true
+    loop: "{{ ec2_info.results }}"
+
+  - name: create public ip for frontend
+    amazon.aws.route53:
+      state: present
+      zone: "{{ zone }}"
+      record: "{{ zone }}"
+      type:  A
+      ttl: 1
+      value: "{{ item.instances[0].public_ip_address }}"
+      wait: true
+      overwrite: true
+    loop: "{{ ec2_info.results }}"
+    when: item.item == "frontend"
