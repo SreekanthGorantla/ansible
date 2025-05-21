@@ -2,9 +2,9 @@
   connection: local
   hosts: local
   vars:
-    subnet_id: 
-    security_group_id: 
-    ami_id:
+    subnet_id: #get from aws instance
+    security_group_id: #get from aws instance
+    ami_id: #get from aws instance
     instance_type: t3.micro
     zone: sreeaws.space
     instances:
@@ -63,3 +63,12 @@
       overwrite: true
     loop: "{{ ec2_info.results }}"
     when: item.item == "frontend"
+
+
+    # aws configuration
+    # it will ask key and secret provide them
+
+    # Ansible vault creation:
+    ##########################
+    #ansible-vault create <filename>.yaml
+    # to view/edit ansible-valut view/edit <filename>.yaml
