@@ -23,6 +23,3 @@
 # 4th preference is Prompt level
 # 5th preference is Play level
 # 6th preference is Inventory level
-
-# Issue: File is a reserved word in Ansible which i don't know. I have given a name as File at one place 
-# which causes an issue which took some time to figure it out and changed it to other name and it worked.
