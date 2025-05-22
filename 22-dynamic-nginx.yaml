@@ -1,0 +1,16 @@
+- name: nginx installation
+  hosts: all
+  become: yes
+  serial: 5     # this helps to run this playbook on 5 servers first and then it runs again on aother 5 servers like that it works
+  tasks:
+  - name: Install nginx
+    ansible.builtin.package:
+      name: nginx
+      state: present
+
+  - name: start and run nginx
+    tags:
+    - run
+    ansible.builtin.service:
+      name: nginx
+      state: started
